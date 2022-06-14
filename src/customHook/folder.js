@@ -60,6 +60,10 @@ export const useFolder = (topF = Upper) => {
       this.title = v;
       update();
     },
+    setContents(v) {
+      this.contents = v;
+      update();
+    },
   });
   /*
   폴더(파일)리스트, set함수, 현재폴더(파일), 폴더(파일)생성기

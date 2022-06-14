@@ -3,14 +3,10 @@ const Viewer = ({ fileInfo, update }) => {
   const { id, title, contents } = fileInfo;
   const areaRef = useRef();
 
-  const onSave = (e) => {
-    fileInfo.contents = areaRef.current.value;
-    update();
-  };
+  const onSave = (e) => fileInfo.setContents(areaRef.current.value);
 
   useEffect(() => {
     areaRef.current.value = contents;
-
     // eslint-disable-next-line
   }, [id]);
 
