@@ -10,6 +10,7 @@ import "./App.css";
 function App() {
   const { lists, update, currF, makeFolder, makeFile } = useFolder();
   const [fileInfo, setFileInfo] = useState("");
+
   const creatF = _.curry((f, title) => {
     /* 클릭한 폴더에 추가 후 재렌더링 */
     if (!Array.isArray(currF.current)) currF.current = Upper.children;
@@ -45,6 +46,7 @@ function App() {
           remove={remove}
           setCurrentFolder={setCurrentFolder}
           getFileInfo={getFileInfo}
+          update={update}
         />
         {fileInfo ? <Viewer fileInfo={fileInfo} update={update} /> : null}
       </main>

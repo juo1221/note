@@ -19,9 +19,7 @@ export const useFolder = (topF = Upper) => {
   const currF = useRef(lists[0].children);
 
   /* 리렌더링 */
-  const update = () => {
-    setLists((prev) => [...prev]);
-  };
+  const update = () => setLists((prev) => [...prev]);
 
   //prettier-ignore
   const remove = (callback, parent) =>
@@ -44,6 +42,10 @@ export const useFolder = (topF = Upper) => {
       if (id == this.id) remove((f) => f.id == id, parent);
       else this.children.map((v) => v.remove(this, id));
     },
+    setTitle(v) {
+      this.title = v;
+      update();
+    },
   });
 
   const makeFile = (title) => ({
@@ -53,6 +55,10 @@ export const useFolder = (topF = Upper) => {
     contents: "",
     remove(parent, id) {
       if (id == this.id) remove((f) => f.id == id, parent);
+    },
+    setTitle(v) {
+      this.title = v;
+      update();
     },
   });
   /*

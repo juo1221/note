@@ -1,11 +1,46 @@
-import React from "react";
+import * as _ from "fxjs";
+import React, { useRef, useEffect } from "react";
 
-const File = ({ parent, setCurrentFolder, remove, getFileInfo }) => {
-  const { id, title, type, children } = parent;
+/* file은 타입에 따라 폴더 혹은 파일이 될 수 있다.*/
+const File = ({ file, setCurrentFolder, remove, getFileInfo, update }) => {
+  const { id, title, type, children } = file;
+  const inputRef = useRef();
+
   const setOnDelete = (e) => {
     e.stopPropagation();
     remove(id);
   };
+  const lock = () => {
+    inputRef.current.readOnly = false;
+  };
+  const unlock = () => {
+    inputRef.current.readOnly = true;
+  };
+  const onKeyUp = (e) => {
+    if (e.keyCode != 13) return;
+    lock();
+  };
+
+  const setInput = (v) => {
+    inputRef.current.value = v;
+  };
+  const cancel = () => setInput(title);
+
+  const onBlur = (e) => {
+    unlock();
+    const value = inputRef.current.value.trim();
+    if (file.title == value) return cancel();
+    if (!value) {
+      window.alert("제목을 입력해주세요");
+      return cancel();
+    }
+    if (window.confirm("저장하시겠습니까?")) file.setTitle(value);
+    else cancel();
+  };
+  useEffect(() => {
+    setInput(title);
+    unlock();
+  }, []);
 
   return (
     <ul
@@ -13,12 +48,17 @@ const File = ({ parent, setCurrentFolder, remove, getFileInfo }) => {
       onClick={(e) => {
         e.stopPropagation();
         if (type == "folder") setCurrentFolder(children);
-        else getFileInfo(parent);
+        else getFileInfo(file);
       }}
     >
       <li>
         <div className="box">
-          <p className="title">{title}</p>
+          <input
+            className="title"
+            ref={inputRef}
+            onKeyUp={onKeyUp}
+            onBlur={onBlur}
+          />
           <button type="button" onClick={setOnDelete}>
             삭제
           </button>
@@ -27,10 +67,11 @@ const File = ({ parent, setCurrentFolder, remove, getFileInfo }) => {
           ? children.map((f) => (
               <File
                 key={f.id}
-                parent={f}
+                file={f}
                 setCurrentFolder={setCurrentFolder}
                 remove={remove}
                 getFileInfo={getFileInfo}
+                update={update}
               />
             ))
           : null}

@@ -1,15 +1,16 @@
 import React from "react";
 import File from "./File";
-const Lists = ({ lists, setCurrentFolder, remove, getFileInfo }) => {
+const Lists = ({ lists, setCurrentFolder, remove, getFileInfo, update }) => {
   return (
     <div className="lists">
       {lists.map((f) => (
         <File
           key={f.id}
-          parent={f}
+          file={f}
           setCurrentFolder={setCurrentFolder}
           remove={remove}
           getFileInfo={getFileInfo}
+          update={update}
         />
       ))}
     </div>
