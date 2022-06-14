@@ -20,6 +20,12 @@ function App() {
   const setCurrentFolder = (f) => {
     currF.current = f;
   };
+
+  /* 클릭 폴더 삭제  */
+  const remove = (tId) => {
+    console.log(lists);
+    lists[0].remove(tId);
+  };
   return (
     <div className="app">
       <h1>Note</h1>
@@ -28,7 +34,11 @@ function App() {
         <FileForm creatFile={creatF(makeFile)} />
       </div>
       <main className="main">
-        <Lists lists={lists} setCurrentFolder={setCurrentFolder} />
+        <Lists
+          lists={lists}
+          remove={remove}
+          setCurrentFolder={setCurrentFolder}
+        />
       </main>
     </div>
   );
