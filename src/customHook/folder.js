@@ -18,6 +18,11 @@ export const useFolder = (topF = Upper) => {
   const [lists, setLists] = useState([topF]);
   const currF = useRef(lists[0].children);
 
+  /* 리렌더링 */
+  const update = () => {
+    setLists((prev) => [...prev]);
+  };
+
   //prettier-ignore
   const remove = (callback, parent) =>
     _.go(
@@ -26,7 +31,7 @@ export const useFolder = (topF = Upper) => {
       (remain) => {
         currF.current = parent;
         currF.current.children = remain;
-        setLists((prev) => [...prev]);
+        update()
       },
     );
 
@@ -45,7 +50,7 @@ export const useFolder = (topF = Upper) => {
     id: uuidv4(),
     title,
     type: "file",
-    content: "",
+    contents: "",
     remove(parent, id) {
       if (id == this.id) remove((f) => f.id == id, parent);
     },
@@ -53,5 +58,5 @@ export const useFolder = (topF = Upper) => {
   /*
   폴더(파일)리스트, set함수, 현재폴더(파일), 폴더(파일)생성기
    */
-  return { lists, setLists, currF, makeFolder, makeFile };
+  return { lists, update, currF, makeFolder, makeFile };
 };

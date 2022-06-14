@@ -8,13 +8,13 @@ import Viewer from "./components/Viewer";
 import "./App.css";
 
 function App() {
-  const { lists, setLists, currF, makeFolder, makeFile } = useFolder();
+  const { lists, update, currF, makeFolder, makeFile } = useFolder();
   const [fileInfo, setFileInfo] = useState("");
   const creatF = _.curry((f, title) => {
     /* 클릭한 폴더에 추가 후 재렌더링 */
     if (!Array.isArray(currF.current)) currF.current = Upper.children;
     currF.current.push(f(title));
-    setLists((prev) => [...prev]);
+    update();
   });
 
   /* 클릭했을 때 현재 폴더 지정 */
@@ -31,6 +31,7 @@ function App() {
   const getFileInfo = (f) => {
     setFileInfo(f);
   };
+
   return (
     <div className="app">
       <h1>Note</h1>
@@ -45,7 +46,7 @@ function App() {
           setCurrentFolder={setCurrentFolder}
           getFileInfo={getFileInfo}
         />
-        {fileInfo ? <Viewer fileInfo={fileInfo} /> : null}
+        {fileInfo ? <Viewer fileInfo={fileInfo} update={update} /> : null}
       </main>
     </div>
   );
