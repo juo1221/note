@@ -1,10 +1,15 @@
 import React from "react";
+import { useForm } from "../../customHook/form-hooks";
 
-const FileForm = () => {
+const FileForm = ({ creatFile }) => {
+  const { inputState, onSubmitFile } = useForm({ creatFile });
+
   return (
     <form>
-      <input type="text" />
-      <button type="submit">파일추가</button>
+      <input type="text" {...inputState} />
+      <button type="submit" onClick={onSubmitFile}>
+        파일추가
+      </button>
     </form>
   );
 };
