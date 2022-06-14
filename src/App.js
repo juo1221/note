@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import Lists from "./components/Lists";
 import FileForm from "./components/form/FileForm";
 import FolderForm from "./components/form/FolderForm";
-import { Upper, useFolder } from "./customHook/folder";
+import { useFolder } from "./customHook/folder";
 import Viewer from "./components/Viewer";
 import "./App.css";
 
 function App() {
-  const { lists, update, currF, makeFolder, makeFile } = useFolder();
+  const { Upper, lists, update, currF, makeFolder, makeFile } = useFolder();
   const [fileInfo, setFileInfo] = useState("");
 
   const creatF = _.curry((f, title) => {

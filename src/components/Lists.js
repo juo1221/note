@@ -6,6 +6,7 @@ const Lists = ({ lists, setCurrentFolder, remove, getFileInfo, update }) => {
       {lists.map((f) => (
         <File
           key={f.id}
+          parent={null}
           file={f}
           setCurrentFolder={setCurrentFolder}
           remove={remove}

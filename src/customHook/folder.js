@@ -3,19 +3,19 @@ import { cus } from "../utils/customF";
 import { v4 as uuidv4 } from "uuid";
 import * as _ from "fxjs";
 
-/*최상위 폴더*/
-export const Upper = {
-  id: uuidv4(),
-  type: "folder",
-  title: "Folders",
-  children: [],
-  remove(id) {
-    this.children.map((v) => v.remove(this, id));
-  },
-};
+export const useFolder = (topF) => {
+  /*최상위 폴더*/
+  const Upper = {
+    id: uuidv4(),
+    type: "folder",
+    title: "Folders",
+    children: [],
+    removeChild(id) {
+      remove((f) => f.id == id, this);
+    },
+  };
 
-export const useFolder = (topF = Upper) => {
-  const [lists, setLists] = useState([topF]);
+  const [lists, setLists] = useState([topF || Upper]);
   const currF = useRef(lists[0].children);
 
   /* 리렌더링 */
@@ -27,6 +27,7 @@ export const useFolder = (topF = Upper) => {
       parent.children,
       cus.removeBy(callback),
       (remain) => {
+        console.log(remain);
         currF.current = parent;
         currF.current.children = remain;
         update()
@@ -38,9 +39,8 @@ export const useFolder = (topF = Upper) => {
     title,
     type: "folder",
     children: [],
-    remove(parent, id) {
-      if (id == this.id) remove((f) => f.id == id, parent);
-      else this.children.map((v) => v.remove(this, id));
+    removeChild(id) {
+      remove((f) => f.id == id, this);
     },
     setTitle(v) {
       this.title = v;
@@ -53,9 +53,6 @@ export const useFolder = (topF = Upper) => {
     title,
     type: "file",
     contents: "",
-    remove(parent, id) {
-      if (id == this.id) remove((f) => f.id == id, parent);
-    },
     setTitle(v) {
       this.title = v;
       update();
@@ -66,7 +63,7 @@ export const useFolder = (topF = Upper) => {
     },
   });
   /*
-  폴더(파일)리스트, set함수, 현재폴더(파일), 폴더(파일)생성기
+  최상위폴더,폴더(파일)리스트, set함수, 현재폴더(파일), 폴더(파일)생성기
    */
-  return { lists, update, currF, makeFolder, makeFile };
+  return { Upper, lists, update, currF, makeFolder, makeFile };
 };
