@@ -16,6 +16,10 @@ function App() {
     setLists((prev) => [...prev]);
   });
 
+  /* 클릭했을 때 현재 폴더 지정 */
+  const setCurrentFolder = (f) => {
+    currF.current = f;
+  };
   return (
     <div className="app">
       <h1>Note</h1>
@@ -24,7 +28,7 @@ function App() {
         <FileForm creatFile={creatF(makeFile)} />
       </div>
       <main className="main">
-        <Lists lists={lists} />
+        <Lists lists={lists} setCurrentFolder={setCurrentFolder} />
       </main>
     </div>
   );
