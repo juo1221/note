@@ -1,14 +1,15 @@
 import * as _ from "fxjs";
+import React, { useState } from "react";
+import Lists from "./components/Lists";
 import FileForm from "./components/form/FileForm";
 import FolderForm from "./components/form/FolderForm";
-import Lists from "./components/Lists";
 import { Upper, useFolder } from "./customHook/folder";
-
+import Viewer from "./components/Viewer";
 import "./App.css";
 
 function App() {
   const { lists, setLists, currF, makeFolder, makeFile } = useFolder();
-
+  const [fileInfo, setFileInfo] = useState("");
   const creatF = _.curry((f, title) => {
     /* 클릭한 폴더에 추가 후 재렌더링 */
     if (!Array.isArray(currF.current)) currF.current = Upper.children;
@@ -23,8 +24,12 @@ function App() {
 
   /* 클릭 폴더 삭제  */
   const remove = (tId) => {
-    console.log(lists);
     lists[0].remove(tId);
+  };
+
+  /* 클릭 파일 정보  */
+  const getFileInfo = (f) => {
+    setFileInfo(f);
   };
   return (
     <div className="app">
@@ -38,7 +43,9 @@ function App() {
           lists={lists}
           remove={remove}
           setCurrentFolder={setCurrentFolder}
+          getFileInfo={getFileInfo}
         />
+        {fileInfo ? <Viewer fileInfo={fileInfo} /> : null}
       </main>
     </div>
   );

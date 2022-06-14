@@ -1,6 +1,6 @@
 import React from "react";
 
-const File = ({ parent, setCurrentFolder, remove }) => {
+const File = ({ parent, setCurrentFolder, remove, getFileInfo }) => {
   const { id, title, type, children } = parent;
   const setOnDelete = (e) => {
     e.stopPropagation();
@@ -12,7 +12,8 @@ const File = ({ parent, setCurrentFolder, remove }) => {
       className={type}
       onClick={(e) => {
         e.stopPropagation();
-        setCurrentFolder(children);
+        if (type == "folder") setCurrentFolder(children);
+        else getFileInfo(parent);
       }}
     >
       <li>
@@ -29,6 +30,7 @@ const File = ({ parent, setCurrentFolder, remove }) => {
                 parent={f}
                 setCurrentFolder={setCurrentFolder}
                 remove={remove}
+                getFileInfo={getFileInfo}
               />
             ))
           : null}
