@@ -9,9 +9,16 @@ export const useFolder = (topF) => {
     id: uuidv4(),
     type: "folder",
     title: "Folders",
+    parent: "",
     children: [],
     removeChild(id) {
       remove((f) => f.id == id, this);
+    },
+    setParent(v) {
+      this.parent = v;
+    },
+    getTitle() {
+      return this.title;
     },
   };
 
@@ -38,6 +45,7 @@ export const useFolder = (topF) => {
     id: uuidv4(),
     title,
     type: "folder",
+    parent: "",
     children: [],
     removeChild(id) {
       remove((f) => f.id == id, this);
@@ -46,12 +54,19 @@ export const useFolder = (topF) => {
       this.title = v;
       update();
     },
+    setParent(v) {
+      this.parent = v;
+    },
+    getTitle() {
+      return this.title;
+    },
   });
 
   const makeFile = (title) => ({
     id: uuidv4(),
     title,
     type: "file",
+    parent: "",
     contents: "",
     setTitle(v) {
       this.title = v;
@@ -60,6 +75,12 @@ export const useFolder = (topF) => {
     setContents(v) {
       this.contents = v;
       update();
+    },
+    setParent(v) {
+      this.parent = v;
+    },
+    getTitle() {
+      return this.title;
     },
   });
   /*
