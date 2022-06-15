@@ -12,10 +12,13 @@ function App() {
   const [file, setFile] = useState("");
 
   const creatF = _.curry((f, title) => {
-    /* 클릭한 폴더에 추가 후 재렌더링 */
-    if (!Array.isArray(currF.current)) currF.current = Upper.children;
-    currF.current.push(f(title));
-    update();
+    //prettier-ignore
+    if (currF.current.some((file) => file.title == title)) alert("파일명이 이미 존재합니다.");
+    else {
+      if (!Array.isArray(currF.current)) currF.current = Upper.children;
+      currF.current.push(f(title));
+      update();
+    }
   });
 
   /* 클릭했을 때 현재 폴더 지정 */
