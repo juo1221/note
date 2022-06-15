@@ -1,6 +1,6 @@
 import React from "react";
 import File from "./File";
-const Lists = ({ lists, setCurrentFolder, remove, getFileInfo, update }) => {
+const Lists = ({ lists, setCurrentFolder, remove, getFile, update }) => {
   return (
     <div className="lists">
       {lists.map((f) => (
@@ -10,7 +10,7 @@ const Lists = ({ lists, setCurrentFolder, remove, getFileInfo, update }) => {
           file={f}
           setCurrentFolder={setCurrentFolder}
           remove={remove}
-          getFileInfo={getFileInfo}
+          getFile={getFile}
           update={update}
         />
       ))}

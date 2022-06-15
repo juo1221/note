@@ -9,7 +9,7 @@ import "./App.css";
 
 function App() {
   const { Upper, lists, update, currF, makeFolder, makeFile } = useFolder();
-  const [fileInfo, setFileInfo] = useState("");
+  const [file, setFile] = useState("");
 
   const creatF = _.curry((f, title) => {
     /* 클릭한 폴더에 추가 후 재렌더링 */
@@ -29,8 +29,8 @@ function App() {
   };
 
   /* 클릭 파일 정보  */
-  const getFileInfo = (f) => {
-    setFileInfo(f);
+  const getFile = (f) => {
+    setFile(f);
   };
 
   return (
@@ -45,10 +45,10 @@ function App() {
           lists={lists}
           remove={remove}
           setCurrentFolder={setCurrentFolder}
-          getFileInfo={getFileInfo}
+          getFile={getFile}
           update={update}
         />
-        {fileInfo ? <Viewer fileInfo={fileInfo} update={update} /> : null}
+        {file ? <Viewer file={file} update={update} /> : null}
       </main>
     </div>
   );

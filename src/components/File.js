@@ -2,16 +2,11 @@ import * as _ from "fxjs";
 import React, { useRef, useEffect } from "react";
 
 /* file은 타입에 따라 폴더 혹은 파일이 될 수 있다.*/
-const File = ({
-  parent,
-  file,
-  setCurrentFolder,
-  remove,
-  getFileInfo,
-  update,
-}) => {
+const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
   const { id, title, type, children } = file;
+
   const inputRef = useRef();
+
   const setOnDelete = (e) => {
     e.stopPropagation();
     parent && parent.removeChild(id);
@@ -44,6 +39,7 @@ const File = ({
     else cancel();
   };
   useEffect(() => {
+    file.setParent(parent);
     setInput(title);
     unlock();
   }, []);
@@ -54,7 +50,7 @@ const File = ({
       onClick={(e) => {
         e.stopPropagation();
         if (type == "folder") setCurrentFolder(children);
-        else getFileInfo(file);
+        else getFile(file);
       }}
     >
       <li>
@@ -79,7 +75,7 @@ const File = ({
                 file={f}
                 setCurrentFolder={setCurrentFolder}
                 remove={remove}
-                getFileInfo={getFileInfo}
+                getFile={getFile}
                 update={update}
               />
             ))
