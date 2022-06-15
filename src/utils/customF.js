@@ -5,3 +5,12 @@ export const cus = {};
 cus.removeBy = _.curry((f, iter) =>
   _.go(_.findIndex(f, iter), (idx) => _.remove(idx, iter))
 );
+
+/*추출함수,조건함수,최상위객체,분리자 */
+cus.recurJoin = (f, cond, obj, sep) =>
+  cond(obj)
+    ? _.go(
+        _.map(f, [obj]),
+        (v) => cus.recurJoin(f, cond, cond(obj), sep) + `${sep}` + v
+      )
+    : f(obj);
