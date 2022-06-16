@@ -1,0 +1,15 @@
+.lists {
+  height: 95%;
+  padding: 1rem;
+}
+.lists ul {
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+}
+
+.file {
+  list-style: none;
+}
+ul {
+  list-style-type: "〉";
+}

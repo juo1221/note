@@ -1,11 +1,14 @@
-import * as _ from "fxjs";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { cus } from "../utils/customF";
+import "./file.css";
 
 /* file은 타입에 따라 폴더 혹은 파일이 될 수 있다.*/
 const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
   const { id, title, type, children } = file;
-
+  const [focused, setFocused] = useState(false);
   const inputRef = useRef();
+  const targetRef = useRef();
+  const subRef = useRef();
 
   const setOnDelete = (e) => {
     e.stopPropagation();
@@ -38,6 +41,20 @@ const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
     if (window.confirm("저장하시겠습니까?")) file.setTitle(value);
     else cancel();
   };
+
+  const fileToggle = () => {
+    cus.toggle(targetRef.current, "focused");
+    cus.toggle(subRef.current, "unfold");
+  };
+
+  const setOnClick = (e) => {
+    e.stopPropagation();
+    setFocused(!focused);
+    fileToggle();
+    if (type == "folder") setCurrentFolder(children);
+    else getFile(file);
+  };
+
   useEffect(() => {
     file.setParent(parent);
     setInput(title);
@@ -46,15 +63,23 @@ const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
 
   return (
     <ul
-      className={type}
-      onClick={(e) => {
-        e.stopPropagation();
-        if (type == "folder") setCurrentFolder(children);
-        else getFile(file);
-      }}
+      ref={targetRef}
+      className={parent ? type : `${type} upper`}
+      onClick={setOnClick}
     >
       <li>
         <div className="box">
+          <img
+            className="file-img"
+            src={
+              type == "folder"
+                ? `/folder-${focused ? "open" : "close"}.svg`
+                : "/file-solid.svg"
+            }
+            width="16px"
+            height="16px"
+            alt=""
+          />
           <input
             className="title"
             ref={inputRef}
@@ -62,24 +87,26 @@ const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
             onBlur={onBlur}
           />
           {parent ? (
-            <button type="button" onClick={setOnDelete}>
-              삭제
+            <button className="delBtn" type="button" onClick={setOnDelete}>
+              x
             </button>
           ) : null}
         </div>
-        {type == "folder"
-          ? children.map((f) => (
-              <File
-                key={f.id}
-                parent={file}
-                file={f}
-                setCurrentFolder={setCurrentFolder}
-                remove={remove}
-                getFile={getFile}
-                update={update}
-              />
-            ))
-          : null}
+        <div ref={subRef} className="sub-files unfold">
+          {type == "folder"
+            ? children.map((f) => (
+                <File
+                  key={f.id}
+                  parent={file}
+                  file={f}
+                  setCurrentFolder={setCurrentFolder}
+                  remove={remove}
+                  getFile={getFile}
+                  update={update}
+                />
+              ))
+            : null}
+        </div>
       </li>
     </ul>
   );

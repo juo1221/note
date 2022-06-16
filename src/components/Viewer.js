@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { cus } from "../utils/customF";
+import "./viewer.css";
 
 const Viewer = ({ file, update }) => {
   const { id, title, contents } = file;
@@ -12,22 +13,22 @@ const Viewer = ({ file, update }) => {
     // eslint-disable-next-line
   }, [id]);
 
-  const breadcrumb = cus.recurJoin;
+  const breadcrumb = cus.recurJoin(
+    (f) => f.title,
+    (obj) => obj.parent,
+    file,
+    "-"
+  );
 
   return (
-    <div className="viewer">
-      <h1>{title}</h1>
-      <span className="breadcrumb">
-        {breadcrumb(
-          (f) => f.title,
-          (obj) => obj.parent,
-          file,
-          "-"
-        )}
-      </span>
+    <div>
+      <h1 className="file-title">{title}</h1>
+      <span className="breadcrumb">{breadcrumb}</span>
+      <div className="file-save">
+        <button  onClick={onSave}>저장</button>
+      </div>
       <hr />
       <textarea ref={areaRef} />
-      <button onClick={onSave}>저장</button>
     </div>
   );
 };

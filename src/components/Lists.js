@@ -1,5 +1,6 @@
 import React from "react";
 import File from "./File";
+import "./lists.css";
 const Lists = ({ lists, setCurrentFolder, remove, getFile, update }) => {
   return (
     <div className="lists">

@@ -5,6 +5,7 @@ import FileForm from "./components/form/FileForm";
 import FolderForm from "./components/form/FolderForm";
 import { useFolder } from "./customHook/folder";
 import Viewer from "./components/Viewer";
+import { GiNotebook } from "react-icons/gi";
 import "./App.css";
 
 function App() {
@@ -38,21 +39,29 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Note</h1>
-      <div className="forms">
-        <FolderForm creatFolder={creatF(makeFolder)} />
-        <FileForm creatFile={creatF(makeFile)} />
+      <div className="container">
+        <aside className="aside">
+          <div className="lists-container">
+            <div className="app-title">
+              BLUE
+            </div>
+            <Lists
+              lists={lists}
+              remove={remove}
+              setCurrentFolder={setCurrentFolder}
+              getFile={getFile}
+              update={update}
+            />
+          </div>
+          <div className="forms">
+            <FolderForm creatFolder={creatF(makeFolder)} />
+            <FileForm creatFile={creatF(makeFile)} />
+          </div>
+        </aside>
+        <div className="viewer">
+          {file ? <Viewer file={file} update={update} /> : null}
+        </div>
       </div>
-      <main className="main">
-        <Lists
-          lists={lists}
-          remove={remove}
-          setCurrentFolder={setCurrentFolder}
-          getFile={getFile}
-          update={update}
-        />
-        {file ? <Viewer file={file} update={update} /> : null}
-      </main>
     </div>
   );
 }

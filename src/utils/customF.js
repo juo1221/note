@@ -14,3 +14,5 @@ cus.recurJoin = (f, cond, obj, sep) =>
         (v) => cus.recurJoin(f, cond, cond(obj), sep) + `${sep}` + v
       )
     : f(obj);
+
+cus.toggle = (target, className) => target.classList.toggle(className);
