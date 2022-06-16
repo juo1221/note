@@ -44,7 +44,12 @@ const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
 
   const fileToggle = () => {
     cus.toggle(targetRef.current, "focused");
-    cus.toggle(subRef.current, "unfold");
+    cus.toggle(subRef.current, "hide");
+    /* 파일이 열릴때 애니메이션 효과를 주기 위해 show를 적용하고 해제한다. */ 
+    if (!subRef.current.classList.contains("hide")) {
+      cus.toggle(subRef.current, "show");
+      setTimeout(() => cus.toggle(subRef.current, "show"), 0);
+    }
   };
 
   const setOnClick = (e) => {
@@ -92,20 +97,22 @@ const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
             </button>
           ) : null}
         </div>
-        <div ref={subRef} className="sub-files unfold">
-          {type == "folder"
-            ? children.map((f) => (
-                <File
-                  key={f.id}
-                  parent={file}
-                  file={f}
-                  setCurrentFolder={setCurrentFolder}
-                  remove={remove}
-                  getFile={getFile}
-                  update={update}
-                />
-              ))
-            : null}
+        <div className="sub-container">
+          <div ref={subRef} className="sub-files hide">
+            {type == "folder"
+              ? children.map((f) => (
+                  <File
+                    key={f.id}
+                    parent={file}
+                    file={f}
+                    setCurrentFolder={setCurrentFolder}
+                    remove={remove}
+                    getFile={getFile}
+                    update={update}
+                  />
+                ))
+              : null}
+          </div>
         </div>
       </li>
     </ul>

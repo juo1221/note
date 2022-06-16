@@ -39,6 +39,15 @@
 .focused {
   list-style-type: "⌵";
 }
-.unfold {
+.hide {
   display: none;
+}
+.sub-container {
+  overflow: hidden;
+}
+.sub-files {
+  transition: transform 0.5s ease-in-out;
+}
+.show {
+  transform: translateY(-100%);
 }

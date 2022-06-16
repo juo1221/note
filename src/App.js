@@ -5,7 +5,6 @@ import FileForm from "./components/form/FileForm";
 import FolderForm from "./components/form/FolderForm";
 import { useFolder } from "./customHook/folder";
 import Viewer from "./components/Viewer";
-import { GiNotebook } from "react-icons/gi";
 import "./App.css";
 
 function App() {
@@ -42,9 +41,7 @@ function App() {
       <div className="container">
         <aside className="aside">
           <div className="lists-container">
-            <div className="app-title">
-              BLUE
-            </div>
+            <div className="app-title">BLUE</div>
             <Lists
               lists={lists}
               remove={remove}
