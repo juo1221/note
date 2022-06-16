@@ -20,10 +20,10 @@ function App() {
   ]);
 
   const creatF = _.curry((f, title) => {
+    if (!Array.isArray(currF.current)) setCurrentFolder(Upper.children);
     //prettier-ignore
-    if (currF.current.some((file) => file.title == title)) alert("파일명이 이미 존재합니다.");
+    if (currF.current.some((file) => file.title == title))alert("파일명이 이미 존재합니다.");
     else {
-      if (!Array.isArray(currF.current)) currF.current = Upper.children;
       currF.current.push(f(title));
       update();
     }
@@ -32,11 +32,6 @@ function App() {
   /* 클릭했을 때 현재 폴더 지정 */
   const setCurrentFolder = (f) => {
     currF.current = f;
-  };
-
-  /* 클릭 폴더 삭제  */
-  const remove = (tId) => {
-    lists[0].remove(tId);
   };
 
   /* 클릭 파일 정보  */
@@ -64,7 +59,6 @@ function App() {
             <div className="app-title">BLUE</div>
             <Lists
               lists={lists}
-              remove={remove}
               setCurrentFolder={setCurrentFolder}
               getFile={getFile}
               update={update}

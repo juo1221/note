@@ -1,7 +1,7 @@
 import React from "react";
 import File from "./File";
 import "./lists.css";
-const Lists = ({ lists, setCurrentFolder, remove, getFile, update }) => {
+const Lists = ({ lists, setCurrentFolder, getFile, update }) => {
   return (
     <div className="lists">
       {lists.map((f) => (
@@ -10,7 +10,6 @@ const Lists = ({ lists, setCurrentFolder, remove, getFile, update }) => {
           parent={null}
           file={f}
           setCurrentFolder={setCurrentFolder}
-          remove={remove}
           getFile={getFile}
           update={update}
         />

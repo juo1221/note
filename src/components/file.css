@@ -16,7 +16,7 @@
   font-size: 1.5rem;
 }
 .delBtn:hover {
-  color: black;
+  color: rgba(94, 126, 176);
 }
 .title {
   outline: none;

@@ -34,8 +34,8 @@ export const useFolder = (topF) => {
       parent.children,
       cus.removeBy(callback),
       (remain) => {
-        currF.current = parent;
-        currF.current.children = remain;
+        parent.children = remain;
+        currF.current = parent.children;
         update()
       },
     );

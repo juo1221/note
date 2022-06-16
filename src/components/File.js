@@ -3,7 +3,7 @@ import { cus } from "../utils/customF";
 import "./file.css";
 
 /* file은 타입에 따라 폴더 혹은 파일이 될 수 있다.*/
-const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
+const File = ({ parent, file, setCurrentFolder, getFile, update }) => {
   const { id, title, type, children } = file;
   const [focused, setFocused] = useState(false);
   const inputRef = useRef();
@@ -45,7 +45,7 @@ const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
   const fileToggle = () => {
     cus.toggle(targetRef.current, "focused");
     cus.toggle(subRef.current, "hide");
-    /* 파일이 열릴때 애니메이션 효과를 주기 위해 show를 적용하고 해제한다. */ 
+    /* 파일이 열릴때 애니메이션 효과를 주기 위해 show를 적용하고 해제한다. */
     if (!subRef.current.classList.contains("hide")) {
       cus.toggle(subRef.current, "show");
       setTimeout(() => cus.toggle(subRef.current, "show"), 0);
@@ -106,7 +106,6 @@ const File = ({ parent, file, setCurrentFolder, remove, getFile, update }) => {
                     parent={file}
                     file={f}
                     setCurrentFolder={setCurrentFolder}
-                    remove={remove}
                     getFile={getFile}
                     update={update}
                   />
