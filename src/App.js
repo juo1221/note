@@ -1,15 +1,23 @@
 import * as _ from "fxjs";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Lists from "./components/Lists";
 import FileForm from "./components/form/FileForm";
 import FolderForm from "./components/form/FolderForm";
 import { useFolder } from "./customHook/folder";
 import Viewer from "./components/Viewer";
+import { FiRotateCcw } from "react-icons/fi";
+import { srcDefalut, tmpSrcDefalut } from "./data/img";
+import { useImg } from "./customHook/img";
 import "./App.css";
 
 function App() {
   const { Upper, lists, update, currF, makeFolder, makeFile } = useFolder();
   const [file, setFile] = useState("");
+  const imgBtnRef = useRef();
+  const { src, tmpSrc, imgRef, changeImg } = useImg([
+    srcDefalut,
+    tmpSrcDefalut,
+  ]);
 
   const creatF = _.curry((f, title) => {
     //prettier-ignore
@@ -36,8 +44,20 @@ function App() {
     setFile(f);
   };
 
+  useEffect(() => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      imgRef.current.src = src;
+      imgBtnRef.current.blur();
+    };
+  }, [src, tmpSrc, imgRef]);
+
   return (
     <div className="app">
+      <button ref={imgBtnRef} className="image-btn" onClick={changeImg}>
+        <FiRotateCcw />
+      </button>
       <div className="container">
         <aside className="aside">
           <div className="lists-container">
@@ -56,6 +76,7 @@ function App() {
           </div>
         </aside>
         <div className="viewer">
+          <img ref={imgRef} className="bg-img" src={tmpSrc} alt="bg" />
           {file ? <Viewer file={file} update={update} /> : null}
         </div>
       </div>

@@ -16,3 +16,4 @@ cus.recurJoin = (f, cond, obj, sep) =>
     : f(obj);
 
 cus.toggle = (target, className) => target.classList.toggle(className);
+
