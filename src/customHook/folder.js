@@ -80,6 +80,9 @@ export const useFolder = (topF) => {
       this.contents = v;
       update();
     },
+    getContents() {
+      return this.contents;
+    },
     setParent(v) {
       this.parent = v;
     },

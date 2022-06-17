@@ -15,10 +15,11 @@ function App() {
   const { Upper, lists, update, currF, makeFolder, makeFile } = useFolder();
   const [file, setFile] = useState("");
   const imgBtnRef = useRef();
-  const { src, tmpSrc, imgRef, changeImg } = useImg([
-    srcDefalut,
-    tmpSrcDefalut,
-  ]);
+  const areaRef = useRef();
+
+  //prettier-ignore
+  const { src, tmpSrc, imgRef, changeImg } = useImg([srcDefalut,tmpSrcDefalut]);
+
   const creatF = _.curry((f, title) => {
     if (!Array.isArray(currF.current)) setCurrentFolder(Upper.children);
     //prettier-ignore
@@ -34,9 +35,28 @@ function App() {
     currF.current = f;
   };
 
+  const save = () => {
+    Ui.alert("저장완료!");
+    file.setContents(areaRef.current.value);
+  };
+
   /* 클릭 파일 정보  */
-  const getFile = (f) => {
-    setFile(f);
+  const getFile = async (f) => {
+    
+    /* 모든 조건이 true이면 confrim 창 적용 */
+    const conds = [
+      () => file,
+      () => file.id != f.id,
+      () => file.getContents() !== areaRef.current.value,
+    ];
+    _.go(
+      conds,
+      _.every((f) => f()),
+      async (b) => {
+        if (b) if (await Ui.confirm("기록을 저장할까요?")) save();
+      },
+      () => setFile(f)
+    );
   };
 
   /* 화면에 보여주고 있는 파일과 지우려는 파일이 같다면 초기화 */
@@ -77,7 +97,9 @@ function App() {
         </aside>
         <div className="viewer">
           <img ref={imgRef} className="bg-img" src={tmpSrc} alt="bg" />
-          {file ? <Viewer file={file} update={update} /> : null}
+          {file ? (
+            <Viewer file={file} update={update} areaRef={areaRef} save={save} />
+          ) : null}
         </div>
       </div>
     </div>

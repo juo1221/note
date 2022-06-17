@@ -1,16 +1,10 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import { cus } from "../utils/customF";
 import Ui from "../utils/UI";
 import "./viewer.css";
 
-const Viewer = ({ file, update }) => {
+const Viewer = ({ file, update, areaRef, save }) => {
   const { id, title, contents, date } = file;
-  const areaRef = useRef();
-
-  const onSave = async () => {
-    Ui.alert("저장완료!");
-    file.setContents(areaRef.current.value);
-  };
 
   useEffect(() => {
     areaRef.current.value = contents;
@@ -31,7 +25,7 @@ const Viewer = ({ file, update }) => {
         <p className="breadcrumb">{breadcrumb}</p>
         <p className="date">{date}</p>
         <div className="file-save">
-          <button onClick={onSave}>저장</button>
+          <button onClick={save}>저장</button>
         </div>
         <hr />
       </div>
