@@ -5,6 +5,7 @@
 
 .breadcrumb {
   font-size: 1.5rem;
+  margin-top: 1rem;
   color: rgb(39, 39, 39);
 }
 .file-save {
@@ -18,7 +19,11 @@
   background-color: rgb(23, 23, 23);
   color: #fff;
 }
-
+.date {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  color: rgb(39, 39, 39);
+}
 textarea {
   width: 100%;
   height: 83vh;

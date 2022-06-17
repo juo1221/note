@@ -3,7 +3,7 @@ import { cus } from "../utils/customF";
 import "./viewer.css";
 
 const Viewer = ({ file, update }) => {
-  const { id, title, contents } = file;
+  const { id, title, contents, date } = file;
   const areaRef = useRef();
 
   const onSave = (e) => file.setContents(areaRef.current.value);
@@ -23,9 +23,10 @@ const Viewer = ({ file, update }) => {
   return (
     <div>
       <h1 className="file-title">{title}</h1>
-      <span className="breadcrumb">{breadcrumb}</span>
+      <p className="breadcrumb">{breadcrumb}</p>
+      <p className="date">{date}</p>
       <div className="file-save">
-        <button  onClick={onSave}>저장</button>
+        <button onClick={onSave}>저장</button>
       </div>
       <hr />
       <textarea ref={areaRef} />

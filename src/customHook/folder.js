@@ -67,6 +67,7 @@ export const useFolder = (topF) => {
     type: "file",
     parent: "",
     contents: "",
+    date: cus.getDate("/"),
     setTitle(v) {
       this.title = v;
       update();

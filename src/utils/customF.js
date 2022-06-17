@@ -17,3 +17,10 @@ cus.recurJoin = (f, cond, obj, sep) =>
 
 cus.toggle = (target, className) => target.classList.toggle(className);
 
+cus.getDate = (sep) => {
+  const date = new Date();
+  const y = date.getFullYear();
+  const m = date.getMonth() + 1;
+  const d = date.getDate();
+  return `${y}${sep}${m}${sep}${d}`;
+};
