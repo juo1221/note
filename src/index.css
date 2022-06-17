@@ -409,6 +409,7 @@ p {
   justify-content: center;
   padding-top: 10%;
   z-index: 100;
+  animation: fade-in 0.5s;
 }
 .body {
   background-color: white;
@@ -449,4 +450,12 @@ p {
 .ok {
   background: black;
   color: white;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
