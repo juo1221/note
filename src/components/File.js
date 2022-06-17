@@ -49,7 +49,7 @@ const File = ({
       Ui.alert("제목을 입력해주세요");
       return cancel();
     }
-    if (await Ui.confirm("저장하시겠습니까?")) file.setTitle(value);
+    if (await Ui.confirm("저장하시겠습니까?")) file.title = value;
     else cancel();
   };
 
@@ -72,7 +72,7 @@ const File = ({
   };
 
   useEffect(() => {
-    file.setParent(parent);
+    file.parent = parent;
     setInput(title);
     unlock();
   }, []);

@@ -12,20 +12,19 @@ import Ui from "./utils/UI";
 import "./App.css";
 
 function App() {
-  const { Upper, lists, update, currF, makeFolder, makeFile } = useFolder();
+  const { Upper, lists, update, currF, Folder, File } = useFolder();
   const [file, setFile] = useState("");
   const imgBtnRef = useRef();
   const areaRef = useRef();
 
   //prettier-ignore
   const { src, tmpSrc, imgRef, changeImg } = useImg([srcDefalut,tmpSrcDefalut]);
-
   const creatF = _.curry((f, title) => {
     if (!Array.isArray(currF.current)) setCurrentFolder(Upper.children);
     //prettier-ignore
     if (currF.current.some((file) => file.title == title)) Ui.alert("파일명이 이미 존재합니다.");
     else {
-      currF.current.push(f(title));
+      currF.current.push(f.get(title));
       update();
     }
   });
@@ -37,17 +36,16 @@ function App() {
 
   const save = () => {
     Ui.alert("저장완료!");
-    file.setContents(areaRef.current.value);
+    file.contents = areaRef.current.value;
   };
 
   /* 클릭 파일 정보  */
   const getFile = async (f) => {
-    
     /* 모든 조건이 true이면 confrim 창 적용 */
     const conds = [
       () => file,
       () => file.id != f.id,
-      () => file.getContents() !== areaRef.current.value,
+      () => file.contents !== areaRef.current.value,
     ];
     _.go(
       conds,
@@ -91,8 +89,8 @@ function App() {
             />
           </div>
           <div className="forms">
-            <FolderForm creatFolder={creatF(makeFolder)} />
-            <FileForm creatFile={creatF(makeFile)} />
+            <FolderForm creatFolder={creatF(Folder)} />
+            <FileForm creatFile={creatF(File)} />
           </div>
         </aside>
         <div className="viewer">

@@ -5,29 +5,107 @@ import * as _ from "fxjs";
 
 export const useFolder = (topF) => {
   /*최상위 폴더*/
-  const Upper = {
-    id: uuidv4(),
-    type: "folder",
-    title: "Folders",
-    parent: "",
-    children: [],
-    removeChild(id) {
-      remove((f) => f.id == id, this);
-    },
-    setParent(v) {
-      this.parent = v;
-    },
-    setTitle(v) {
-      this.title = v;
+
+  const File = class {
+    _id = uuidv4();
+    _type = "file";
+    _parent = "";
+    _contents = "";
+    _date = cus.getDate("/");
+
+    static get(title) {
+      return new File(title);
+    }
+    constructor(title) {
+      this._title = title;
+    }
+    set title(v) {
+      this._title = v;
       update();
-    },
-    getTitle() {
-      return this.title;
-    },
+    }
+    set contents(v) {
+      this._contents = v;
+      update();
+    }
+    set parent(v) {
+      console.log("setParetn:", v);
+      this._parent = v;
+    }
+    get id() {
+      return this._id;
+    }
+    get title() {
+      return this._title;
+    }
+    get type() {
+      return this._type;
+    }
+    get contents() {
+      return this._contents;
+    }
+    get date() {
+      return this._date;
+    }
   };
 
-  const [lists, setLists] = useState([topF || Upper]);
-  const currF = useRef(lists[0].children);
+  const Folder = class {
+    _id = uuidv4();
+    _type = "folder";
+    _parent = "";
+    _children = [];
+
+    static get(title) {
+      return new Folder(title);
+    }
+    constructor(title) {
+      this._title = title;
+    }
+    set parent(v) {
+      this._parent = v;
+    }
+    set title(v) {
+      this._title = v;
+      update();
+    }
+    set children(newChild) {
+      this._children = [...newChild];
+    }
+    get id() {
+      return this._id;
+    }
+    get title() {
+      return this._title;
+    }
+    get type() {
+      return this._type;
+    }
+    get children() {
+      return this._children;
+    }
+    removeChild(id) {
+      remove((f) => f.id == id, this);
+    }
+  };
+
+  const App = class {
+    constructor() {
+      this._folders = [];
+    }
+    addFolders(f) {
+      if (!(f instanceof Folder)) throw new Error(`invalid f : ${f}`);
+      this._folders.push(f);
+    }
+    get folders() {
+      return this._folders;
+    }
+  };
+
+  const app = new App();
+  /* 최상위 폴더 등록 */
+  const Upper = Folder.get("folders");
+  app.addFolders(Upper);
+  const [lists, setLists] = useState(app.folders);
+  const currF = useRef(Upper.children);
 
   /* 리렌더링 */
   const update = () => setLists((prev) => [...prev]);
@@ -44,54 +122,10 @@ export const useFolder = (topF) => {
       },
     );
 
-  const makeFolder = (title) => ({
-    id: uuidv4(),
-    title,
-    type: "folder",
-    parent: "",
-    children: [],
-    removeChild(id) {
-      remove((f) => f.id == id, this);
-    },
-    setTitle(v) {
-      this.title = v;
-      update();
-    },
-    setParent(v) {
-      this.parent = v;
-    },
-    getTitle() {
-      return this.title;
-    },
-  });
-
-  const makeFile = (title) => ({
-    id: uuidv4(),
-    title,
-    type: "file",
-    parent: "",
-    contents: "",
-    date: cus.getDate("/"),
-    setTitle(v) {
-      this.title = v;
-      update();
-    },
-    setContents(v) {
-      this.contents = v;
-      update();
-    },
-    getContents() {
-      return this.contents;
-    },
-    setParent(v) {
-      this.parent = v;
-    },
-    getTitle() {
-      return this.title;
-    },
-  });
   /*
   최상위폴더,폴더(파일)리스트, set함수, 현재폴더(파일), 폴더(파일)생성기
    */
-  return { Upper, lists, update, currF, makeFolder, makeFile };
+  return { Upper, lists, update, currF, Folder, File };
 };
+
+localStorage["note"] = JSON.stringify();

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { cus } from "../utils/customF";
-import Ui from "../utils/UI";
 import "./viewer.css";
 
 const Viewer = ({ file, update, areaRef, save }) => {
