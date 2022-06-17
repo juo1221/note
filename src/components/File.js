@@ -4,7 +4,14 @@ import Ui from "../utils/UI";
 import "./file.css";
 
 /* file은 타입에 따라 폴더 혹은 파일이 될 수 있다.*/
-const File = ({ parent, file, setCurrentFolder, getFile, update }) => {
+const File = ({
+  parent,
+  file,
+  setCurrentFolder,
+  getFile,
+  update,
+  initFile,
+}) => {
   const { id, title, type, children } = file;
   const [focused, setFocused] = useState(false);
   const inputRef = useRef();
@@ -15,6 +22,7 @@ const File = ({ parent, file, setCurrentFolder, getFile, update }) => {
     e.stopPropagation();
     if (await Ui.confirm("정말 삭제할까요?")) {
       parent && parent.removeChild(id);
+      initFile(file);
     }
   };
   const lock = () => {
@@ -111,6 +119,7 @@ const File = ({ parent, file, setCurrentFolder, getFile, update }) => {
                     setCurrentFolder={setCurrentFolder}
                     getFile={getFile}
                     update={update}
+                    initFile={initFile}
                   />
                 ))
               : null}

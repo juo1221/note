@@ -39,6 +39,11 @@ function App() {
     setFile(f);
   };
 
+  /* 화면에 보여주고 있는 파일과 지우려는 파일이 같다면 초기화 */
+  const initFile = (f) => {
+    if (file.id == f.id) setFile();
+  };
+
   useEffect(() => {
     const img = new Image();
     img.src = src;
@@ -61,6 +66,7 @@ function App() {
               lists={lists}
               setCurrentFolder={setCurrentFolder}
               getFile={getFile}
+              initFile={initFile}
               update={update}
             />
           </div>
