@@ -17,6 +17,10 @@ export const useFolder = (topF) => {
     setParent(v) {
       this.parent = v;
     },
+    setTitle(v) {
+      this.title = v;
+      update();
+    },
     getTitle() {
       return this.title;
     },
