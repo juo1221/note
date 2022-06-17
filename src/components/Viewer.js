@@ -1,12 +1,16 @@
 import React, { useRef, useEffect } from "react";
 import { cus } from "../utils/customF";
+import Ui from "../utils/UI";
 import "./viewer.css";
 
 const Viewer = ({ file, update }) => {
   const { id, title, contents, date } = file;
   const areaRef = useRef();
 
-  const onSave = (e) => file.setContents(areaRef.current.value);
+  const onSave = async () => {
+    Ui.alert("저장완료!");
+    file.setContents(areaRef.current.value);
+  };
 
   useEffect(() => {
     areaRef.current.value = contents;

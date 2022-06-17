@@ -8,6 +8,7 @@ import Viewer from "./components/Viewer";
 import { FiRotateCcw } from "react-icons/fi";
 import { srcDefalut, tmpSrcDefalut } from "./data/img";
 import { useImg } from "./customHook/img";
+import Ui from "./utils/UI";
 import "./App.css";
 
 function App() {
@@ -18,11 +19,10 @@ function App() {
     srcDefalut,
     tmpSrcDefalut,
   ]);
-
   const creatF = _.curry((f, title) => {
     if (!Array.isArray(currF.current)) setCurrentFolder(Upper.children);
     //prettier-ignore
-    if (currF.current.some((file) => file.title == title))alert("파일명이 이미 존재합니다.");
+    if (currF.current.some((file) => file.title == title)) Ui.alert("파일명이 이미 존재합니다.");
     else {
       currF.current.push(f(title));
       update();

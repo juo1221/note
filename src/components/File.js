@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { cus } from "../utils/customF";
+import Ui from "../utils/UI";
 import "./file.css";
 
 /* file은 타입에 따라 폴더 혹은 파일이 될 수 있다.*/
@@ -10,9 +11,11 @@ const File = ({ parent, file, setCurrentFolder, getFile, update }) => {
   const targetRef = useRef();
   const subRef = useRef();
 
-  const setOnDelete = (e) => {
+  const setOnDelete = async (e) => {
     e.stopPropagation();
-    parent && parent.removeChild(id);
+    if (await Ui.confirm("정말 삭제할까요?")) {
+      parent && parent.removeChild(id);
+    }
   };
   const lock = () => {
     inputRef.current.readOnly = false;
@@ -30,15 +33,15 @@ const File = ({ parent, file, setCurrentFolder, getFile, update }) => {
   };
   const cancel = () => setInput(title);
 
-  const onBlur = (e) => {
+  const onBlur = async (e) => {
     unlock();
     const value = inputRef.current.value.trim();
     if (file.title == value) return cancel();
     if (!value) {
-      window.alert("제목을 입력해주세요");
+      Ui.alert("제목을 입력해주세요");
       return cancel();
     }
-    if (window.confirm("저장하시겠습니까?")) file.setTitle(value);
+    if (await Ui.confirm("저장하시겠습니까?")) file.setTitle(value);
     else cancel();
   };
 
