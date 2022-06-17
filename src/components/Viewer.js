@@ -21,14 +21,16 @@ const Viewer = ({ file, update }) => {
   );
 
   return (
-    <div>
-      <h1 className="file-title">{title}</h1>
-      <p className="breadcrumb">{breadcrumb}</p>
-      <p className="date">{date}</p>
-      <div className="file-save">
-        <button onClick={onSave}>저장</button>
+    <div className="viewer-container">
+      <div>
+        <h1 className="file-title">{title}</h1>
+        <p className="breadcrumb">{breadcrumb}</p>
+        <p className="date">{date}</p>
+        <div className="file-save">
+          <button onClick={onSave}>저장</button>
+        </div>
+        <hr />
       </div>
-      <hr />
       <textarea ref={areaRef} />
     </div>
   );
