@@ -22,5 +22,7 @@ cus.getDate = (sep) => {
   const y = date.getFullYear();
   const m = date.getMonth() + 1;
   const d = date.getDate();
-  return `${y}${sep}${m}${sep}${d}`;
+  const H = String(date.getHours()).padStart(2, "0");
+  const M = String(date.getMinutes()).padStart(2, "0");
+  return `${y}${sep}${m}${sep}${d} ${H}시 ${M}분`;
 };

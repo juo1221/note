@@ -6,18 +6,44 @@ import * as _ from "fxjs";
 export const useFolder = (topF) => {
   /*최상위 폴더*/
 
+  //prettier-ignore
+  const remove = (callback, parent) =>
+    _.go(
+      parent.children,
+      cus.removeBy(callback),
+      (remain) => {
+        parent.children = remain;
+        currF.current = parent.children;
+        update()
+      },
+    );
   const File = class {
     _id = uuidv4();
     _type = "file";
     _parent = "";
-    _contents = "";
-    _date = cus.getDate("/");
-
+    toJSON() {
+      return this.getInfo();
+    }
+    getInfo() {
+      return {
+        id: this.id,
+        title: this.title,
+        type: this.type,
+        parent: this.parent,
+        contents: this.contents,
+        date: this.date,
+      };
+    }
     static get(title) {
       return new File(title);
     }
-    constructor(title) {
+    static load(f) {
+      return new File(f.title, f.contents, f.date);
+    }
+    constructor(title, contents = "", date = cus.getDate("/")) {
       this._title = title;
+      this._contents = contents;
+      this._date = date;
     }
     set title(v) {
       this._title = v;
@@ -28,7 +54,6 @@ export const useFolder = (topF) => {
       update();
     }
     set parent(v) {
-      console.log("setParetn:", v);
       this._parent = v;
     }
     get id() {
@@ -36,6 +61,9 @@ export const useFolder = (topF) => {
     }
     get title() {
       return this._title;
+    }
+    get parent() {
+      return this._parent;
     }
     get type() {
       return this._type;
@@ -52,13 +80,41 @@ export const useFolder = (topF) => {
     _id = uuidv4();
     _type = "folder";
     _parent = "";
-    _children = [];
 
+    toJSON() {
+      return this.getInfo();
+    }
+    getInfo() {
+      return {
+        id: this.id,
+        title: this.title,
+        type: this.type,
+        parent: this.parent,
+        children: this.children,
+      };
+    }
     static get(title) {
       return new Folder(title);
     }
-    constructor(title) {
+    static load(f) {
+      const folder = new Folder(f.title, f.children);
+      if (f.type == "folder") {
+        [...f.children].forEach((ff) => {
+          if (ff.type == "folder") folder.addChild(Folder.load(ff));
+          else folder.addChild(File.load(ff));
+          folder.children.shift();
+        });
+      } else {
+        folder.addChild(File.load(f));
+      }
+      return folder;
+    }
+    addChild(f) {
+      this._children.push(f);
+    }
+    constructor(title, children = []) {
       this._title = title;
+      this._children = children;
     }
     set parent(v) {
       this._parent = v;
@@ -76,6 +132,9 @@ export const useFolder = (topF) => {
     get title() {
       return this._title;
     }
+    get parent() {
+      return this._parent;
+    }
     get type() {
       return this._type;
     }
@@ -88,11 +147,17 @@ export const useFolder = (topF) => {
   };
 
   const App = class {
+    static load(json) {
+      const app = new App();
+      json.forEach((f) => {
+        app.addFolders(Folder.load(f));
+      });
+      return app;
+    }
     constructor() {
       this._folders = [];
     }
     addFolders(f) {
-      if (!(f instanceof Folder)) throw new Error(`invalid f : ${f}`);
       this._folders.push(f);
     }
     get folders() {
@@ -100,32 +165,40 @@ export const useFolder = (topF) => {
     }
   };
 
-  const app = new App();
+  const data = localStorage["note"];
+  let app;
+  let Upper;
+  /*로드 */
+  if (data) {
+    app = App.load(JSON.parse(data));
+    Upper = Folder.get("folders");
+  } else {
+    app = new App();
+    Upper = Folder.get("folders");
+    app.addFolders(Upper);
+  }
+
+  /*세이브*/
+
+  window.addEventListener("beforeunload", async (e) => {
+    e.preventDefault();
+    localStorage["note"] = JSON.stringify(
+      lists,
+      /* 순환참조 오류를 막기 위해 */
+      (k, v) => (k == "parent" ? undefined : v),
+      2
+    );
+  });
+  
   /* 최상위 폴더 등록 */
-  const Upper = Folder.get("folders");
-  app.addFolders(Upper);
   const [lists, setLists] = useState(app.folders);
   const currF = useRef(Upper.children);
 
   /* 리렌더링 */
   const update = () => setLists((prev) => [...prev]);
 
-  //prettier-ignore
-  const remove = (callback, parent) =>
-    _.go(
-      parent.children,
-      cus.removeBy(callback),
-      (remain) => {
-        parent.children = remain;
-        currF.current = parent.children;
-        update()
-      },
-    );
-
   /*
   최상위폴더,폴더(파일)리스트, set함수, 현재폴더(파일), 폴더(파일)생성기
    */
   return { Upper, lists, update, currF, Folder, File };
 };
-
-localStorage["note"] = JSON.stringify();
