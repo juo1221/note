@@ -7,13 +7,16 @@ cus.removeBy = _.curry((f, iter) =>
 );
 
 /*추출함수,조건함수,최상위객체,분리자 */
-cus.recurJoin = (f, cond, obj, sep) =>
+cus.recurJoin = (f, cond, obj, sep = ",") =>
   cond(obj)
     ? _.go(
         _.map(f, [obj]),
         (v) => cus.recurJoin(f, cond, cond(obj), sep) + `${sep}` + v
       )
     : f(obj);
+/*추출함수,조건함수,최상위객체,분리자 */
+cus.recurMap = (f, cond, obj) =>
+  cus.recurJoin(f, cond, obj).split(",").slice(0, -1);
 
 cus.toggle = (target, className) => target.classList.toggle(className);
 

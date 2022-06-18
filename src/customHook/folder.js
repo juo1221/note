@@ -74,6 +74,19 @@ export const useFolder = (topF) => {
     get date() {
       return this._date;
     }
+    isChildOf(targetF) {
+      return _.go(
+        cus.recurMap(
+          (f) => f.id,
+          (f) => f.parent,
+          this
+        ),
+        _.some((id) => id === targetF.id)
+      );
+    }
+    isEqual(targetF) {
+      return this.id == targetF.id;
+    }
   };
 
   const Folder = class {

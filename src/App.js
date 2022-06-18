@@ -58,8 +58,20 @@ function App() {
   };
 
   /* 화면에 보여주고 있는 파일과 지우려는 파일이 같다면 초기화 */
+  /* 화면에 보여주고 있는 파일이 지우려는 폴더 안에 있는 파일이라면 초기화 */
   const initFile = (f) => {
-    if (file.id == f.id) setFile();
+    if (!file) return;
+    const folderCond = {
+      table: [(folder) => file.isChildOf(folder)],
+      check(folder) {
+        return this.table.some((f) => f(folder));
+      },
+    };
+    if (f.type == "folder") {
+      folderCond.check(f) && setFile();
+    } else {
+      file.isEqual(f) && setFile();
+    }
   };
 
   useEffect(() => {
