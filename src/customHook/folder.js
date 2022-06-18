@@ -171,7 +171,7 @@ export const useFolder = (topF) => {
   /*로드 */
   if (data) {
     app = App.load(JSON.parse(data));
-    Upper = Folder.get("folders");
+    Upper = app.folders[0];
   } else {
     app = new App();
     Upper = Folder.get("folders");
@@ -189,7 +189,7 @@ export const useFolder = (topF) => {
       2
     );
   });
-  
+
   /* 최상위 폴더 등록 */
   const [lists, setLists] = useState(app.folders);
   const currF = useRef(Upper.children);
