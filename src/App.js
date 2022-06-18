@@ -94,7 +94,9 @@ function App() {
           </div>
         </aside>
         <div className="viewer">
-          <img ref={imgRef} className="bg-img" src={tmpSrc} alt="bg" />
+          <div className="img-box">
+            <img ref={imgRef} className="bg-img" src={tmpSrc} alt="bg" />
+          </div>
           {file ? (
             <Viewer file={file} update={update} areaRef={areaRef} save={save} />
           ) : null}
